@@ -14,7 +14,7 @@ const db = mysql.createConnection({
   user: "root",
   host: "localhost",
   password: "",
-  database: "perpus",
+  database: "db_perpustakaan",
 });
 
 app.post("/buku/tambah", (req, res) => {
@@ -37,7 +37,7 @@ app.post("/buku/tambah", (req, res) => {
 
 app.get("/buku/daftar", (req, res) => {
   db.query(
-    "SELECT *, DATE_FORMAT(tgl_penambahan,'%Y-%m-%d') AS tanggal FROM buku",
+    "SELECT *, DATE_FORMAT(tgl_penambahan,'%Y-%m-%d') AS tanggal FROM buku ORDER BY tgl_penambahan DESC",
     (err, result) => {
       if (err) {
         console.log(err);
