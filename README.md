@@ -1,7 +1,5 @@
-# **POS-like Library System**
-
+# POS-like Library System
 POS kinda system for Database Practicum Final Project
-
 Made with [ReactJS](https://reactjs.org), [NodeJS](https://nodejs.org), and [MySQL](https://mysql.com)
 
 
