@@ -15,6 +15,7 @@ const db = mysql.createConnection({
   host: "localhost",
   password: "",
   database: "db_perpustakaan",
+  dateStrings: true,
 });
 
 app.post("/buku/tambah", (req, res) => {
@@ -67,16 +68,20 @@ app.put("/buku/update", (req, res) => {
   );
 });
 
-app.delete("/buku/delete/:id_buku", (req, res) => {
-  const id = req.params.id_buku;
+app.get("/buku/cari/:teks_pass", (req, res) => {
+  const teks = req.params.teks_pass;
 
-  db.query("DELETE FROM buku WHERE id_buku = ?", [id], (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
+  db.query(
+    "SELECT * FROM buku WHERE judul LIKE ?",
+    ["%" + teks + "%"],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 });
 
 app.post("/anggota/tambah", (req, res) => {
@@ -126,10 +131,49 @@ app.put("/anggota/update", (req, res) => {
   );
 });
 
-app.delete("/anggota/delete/:id_buku", (req, res) => {
+app.delete("/anggota/delete/:id_anggota", (req, res) => {
   const id = req.params.id_anggota;
 
   db.query("DELETE FROM anggota WHERE id_anggota = ?", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.get("/anggota/cari/:teks_pass", (req, res) => {
+  const teks = req.params.teks_pass;
+
+  db.query(
+    "SELECT * FROM anggota WHERE nama LIKE ?",
+    ["%" + teks + "%"],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/peminjaman/daftar", (req, res) => {
+  db.query("SELECT * FROM data_pinjam ORDER BY tgl_pinjam", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.put("/peminjaman/update", (req, res) => {
+  const id1 = req.body.id_pinjam;
+  const id2 = req.body.id_buku;
+
+  db.query("CALL kembalikan_buku(?, ?)", [id1, id2], (err, result) => {
     if (err) {
       console.log(err);
     } else {
