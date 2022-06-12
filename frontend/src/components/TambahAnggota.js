@@ -2,7 +2,7 @@ import "../style/input.css";
 import React, { useState } from "react";
 import Axios from "axios";
 
-function TambahBuku() {
+function TambahAnggota() {
   const [nama, setNama] = useState("");
   const [alamat, setAlamat] = useState("");
   const [no_telp, setTelp] = useState("");
@@ -27,7 +27,7 @@ function TambahBuku() {
         }}
       />
 
-      <label>Penerbit</label>
+      <label>Alamat</label>
       <input
         type="text"
         onChange={(event) => {
@@ -35,7 +35,7 @@ function TambahBuku() {
         }}
       />
 
-      <label>Pengarang</label>
+      <label>Nomor Telepon</label>
       <input
         type="text"
         onChange={(event) => {
@@ -48,4 +48,4 @@ function TambahBuku() {
   );
 }
 
-export default TambahBuku;
+export default TambahAnggota;
