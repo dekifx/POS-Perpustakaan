@@ -26,12 +26,6 @@ function DaftarBuku() {
     }
   };
 
-  const hapusBuku = (id) => {
-    if (window.confirm("Apakah anda yakin untuk menghapus data?")) {
-      Axios.delete(`http://localhost:3001/buku/delete/${id}`);
-    }
-  };
-
   return (
     <div>
       <div className="view">
@@ -80,13 +74,6 @@ function DaftarBuku() {
                   }}
                 >
                   Ubah
-                </button>
-                <button
-                  onClick={() => {
-                    hapusBuku(val.id_buku);
-                  }}
-                >
-                  Hapus
                 </button>
               </div>
             </div>
