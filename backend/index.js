@@ -160,13 +160,16 @@ app.get("/anggota/cari/:teks_pass", (req, res) => {
 });
 
 app.get("/peminjaman/daftar", (req, res) => {
-  db.query("SELECT * FROM data_pinjam ORDER BY tgl_pinjam", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
+  db.query(
+    "SELECT * FROM data_pinjam LEFT JOIN buku_dipinjam ON data_pinjam.id_pinjam = buku_dipinjam.id_pinjam GROUP BY data_pinjam.id_pinjam ORDER BY tgl_pinjam",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 });
 
 app.put("/peminjaman/update", (req, res) => {
