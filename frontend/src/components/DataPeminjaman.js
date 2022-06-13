@@ -38,7 +38,7 @@ function DataPeminjaman() {
 
               <button
                 onClick={() => {
-                  kembalikan(val.id_anggota);
+                  kembalikan(val.id_pinjam, val.id_buku);
                 }}
               >
                 Kembalikan
