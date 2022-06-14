@@ -1,19 +1,24 @@
-import "../style/input.css";
 import React, { useState } from "react";
 import Axios from "axios";
+import CariAnggota from "./CariAnggota";
 
 function DaftarAnggota() {
   const [daftar, lihatDaftar] = useState([]);
+  const [jumlah, lihatJumlah] = useState([]);
   const [namaBaru, setNamaBaru] = useState();
   const [alamatBaru, setAlamatBaru] = useState();
   const [telpBaru, setTelpBaru] = useState();
+  const [show, setShow] = useState(false);
 
-  const getAnggota = () => {
-    Axios.get("http://localhost:3001/anggota/daftar").then((response) => {
-      console.log = response;
-      lihatDaftar(response.data);
-    });
-  };
+  Axios.get("http://localhost:3001/anggota/daftar").then((response) => {
+    console.log = response;
+    lihatDaftar(response.data);
+  });
+
+  Axios.get("http://localhost:3001/anggota/jumlah").then((response) => {
+    console.log = response;
+    lihatJumlah(response.data);
+  });
 
   const updAnggota = (id) => {
     if (window.confirm("Apakah anda yakin untuk mengubah data?")) {
@@ -34,61 +39,77 @@ function DaftarAnggota() {
 
   return (
     <div>
-      <div className="view">
-        <button onClick={getAnggota}>Daftar Anggota</button>
-
+      <CariAnggota />
+      <div className="centered">
+        <button name="edit" onClick={() => setShow(!show)}>
+          Ubah
+        </button>
         {daftar.map((val, key) => {
           return (
-            <div>
+            <div className="view" key={val.id_anggota}>
+              {val.id_anggota}
               {val.nama}
               {val.alamat}
               {val.no_telp}
 
-              <div>
-                <label>Nama</label>
-                <input
-                  type="text"
-                  name="nama"
-                  placeholder={val.nama}
-                  onChange={(event) => {
-                    setNamaBaru(event.target.value);
-                  }}
-                />
+              <button
+                onClick={() => {
+                  hapusAnggota(val.id_anggota);
+                }}
+              >
+                Hapus
+              </button>
 
-                <label>Alamat</label>
-                <input
-                  type="text"
-                  name="alamat"
-                  placeholder={val.alamat}
-                  onChange={(event) => {
-                    setAlamatBaru(event.target.value);
-                  }}
-                />
+              {show ? (
+                <div>
+                  <label>Nama</label>
+                  <input
+                    type="text"
+                    name="nama"
+                    placeholder={val.nama}
+                    onChange={(event) => {
+                      setNamaBaru(event.target.value);
+                    }}
+                  />
 
-                <label>Nomor Telepon</label>
-                <input
-                  type="text"
-                  name="telp"
-                  placeholder={val.no_telp}
-                  onChange={(event) => {
-                    setTelpBaru(event.target.value);
-                  }}
-                />
-                <button
-                  onClick={() => {
-                    updAnggota(val.id_anggota);
-                  }}
-                >
-                  Ubah
-                </button>
-                <button
-                  onClick={() => {
-                    hapusAnggota(val.id_anggota);
-                  }}
-                >
-                  Hapus
-                </button>
-              </div>
+                  <label>Alamat</label>
+                  <input
+                    type="text"
+                    name="alamat"
+                    placeholder={val.alamat}
+                    onChange={(event) => {
+                      setAlamatBaru(event.target.value);
+                    }}
+                  />
+
+                  <label>Nomor Telepon</label>
+                  <input
+                    type="text"
+                    name="telp"
+                    placeholder={val.no_telp}
+                    onChange={(event) => {
+                      setTelpBaru(event.target.value);
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      updAnggota(val.id_anggota);
+                    }}
+                  >
+                    Simpan
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="jumlah">
+        {jumlah.map((val) => {
+          return (
+            <div>
+              <div>Total Anggota: {val.jumlah}</div>
             </div>
           );
         })}
