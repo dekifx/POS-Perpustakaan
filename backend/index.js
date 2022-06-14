@@ -30,7 +30,7 @@ app.post("/buku/tambah", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.send(["Sukses! Data Ditambahkan"]);
+        res.send(result);
       }
     }
   );
@@ -47,6 +47,16 @@ app.get("/buku/daftar", (req, res) => {
       }
     }
   );
+});
+
+app.get("/buku/jumlah", (req, res) => {
+  db.query("SELECT COUNT(id_buku) AS jumlah FROM buku;", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 app.put("/buku/update", (req, res) => {
@@ -96,7 +106,7 @@ app.post("/anggota/tambah", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.send(["Sukses! Data Ditambahkan"]);
+        res.send(result);
       }
     }
   );
@@ -110,6 +120,20 @@ app.get("/anggota/daftar", (req, res) => {
       res.send(result);
     }
   });
+});
+
+app.get("/anggota/jumlah", (req, res) => {
+  db.query(
+    "SELECT COUNT(id_anggota) AS jumlah FROM anggota;",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        res.send(result);
+      }
+    }
+  );
 });
 
 app.put("/anggota/update", (req, res) => {
@@ -161,7 +185,7 @@ app.get("/anggota/cari/:teks_pass", (req, res) => {
 
 app.get("/peminjaman/daftar", (req, res) => {
   db.query(
-    "SELECT * FROM data_pinjam LEFT JOIN buku_dipinjam ON data_pinjam.id_pinjam = buku_dipinjam.id_pinjam GROUP BY data_pinjam.id_pinjam ORDER BY tgl_pinjam",
+    "SELECT * FROM data_pinjam ORDER BY tgl_pinjam DESC",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -183,4 +207,53 @@ app.put("/peminjaman/update", (req, res) => {
       res.send(result);
     }
   });
+});
+
+app.get("/peminjaman/filter/:tgl1_pass/:tgl2_pass", (req, res) => {
+  const tgl1 = req.params.tgl1_pass;
+  const tgl2 = req.params.tgl2_pass;
+
+  db.query(
+    "SELECT * FROM data_pinjam WHERE tgl_pinjam BETWEEN ? AND ?",
+    [tgl1, tgl2],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/peminjaman/tambah_a", (req, res) => {
+  const id = req.body.id_anggota;
+
+  db.query(
+    "INSERT INTO pinjam(id_anggota, tgl_pinjam, tgl_harus_kembali) VALUES(?, CURRENT_DATE, DATE_ADD(CURRENT_DATE, INTERVAL 14 DAY))",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/peminjaman/tambah_b", (req, res) => {
+  const id = req.body.id_buku;
+
+  db.query(
+    "INSERT INTO buku_dipinjam(id_pinjam, id_buku, status) VALUES ((SELECT MAX(id_pinjam) FROM pinjam), ?, 0)",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
 });
