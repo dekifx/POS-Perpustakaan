@@ -1,4 +1,3 @@
-import "../style/input.css";
 import React, { useState } from "react";
 import Axios from "axios";
 
@@ -33,6 +32,8 @@ function CariAnggota() {
         >
           Cari
         </button>
+      </div>
+      <div className="view">
         {daftar.map((val, key) => {
           return (
             <div>
