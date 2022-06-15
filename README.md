@@ -1,10 +1,8 @@
 # POS-like Library System
+
 POS kinda system for Database Practicum Final Project
 
 Made with [ReactJS](https://reactjs.org), [NodeJS](https://nodejs.org), and [MySQL](https://mysql.com)
-
-
-
 
 ## Requirements
 
@@ -16,15 +14,18 @@ Made with [ReactJS](https://reactjs.org), [NodeJS](https://nodejs.org), and [MyS
 ## Deployment
 
 Dependency Installation
+
 ```bash
   npm i axios mysql express cors
 ```
+
 Running
+
 - Frontend
-    ```bash
+  ```bash
   npm start
-    ```
+  ```
 - Backend
-    ```bash
+  ```bash
   node index.js
-    ```
+  ```
