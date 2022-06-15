@@ -82,7 +82,7 @@ app.get("/buku/cari/:teks_pass", (req, res) => {
   const teks = req.params.teks_pass;
 
   db.query(
-    "SELECT * FROM buku WHERE judul LIKE ?",
+    "SELECT *, DATE_FORMAT(tgl_penambahan,'%Y-%m-%d') AS tanggal FROM buku WHERE judul LIKE ?",
     ["%" + teks + "%"],
     (err, result) => {
       if (err) {

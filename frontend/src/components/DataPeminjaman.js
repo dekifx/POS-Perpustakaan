@@ -1,3 +1,4 @@
+import "../style/Daftar.css";
 import React, { useState } from "react";
 import Axios from "axios";
 
@@ -7,6 +8,7 @@ function DataPeminjaman() {
   const [tanggal1, setTgl1] = useState();
   const [tanggal2, setTgl2] = useState();
   const [show, setShow] = useState(true);
+  const [show2, setShow2] = useState(false);
   const [idA, setIdA] = useState("");
   const [idB, setIdB] = useState("");
 
@@ -52,33 +54,8 @@ function DataPeminjaman() {
 
   return (
     <div>
-      <div className="filtering">
-        <input
-          type="date"
-          name="tanggal1"
-          onChange={(event) => {
-            setTgl1(event.target.value);
-          }}
-        />
-        {" - "}
-        <input
-          type="date"
-          name="tanggal2"
-          onChange={(event) => {
-            setTgl2(event.target.value);
-          }}
-        />
-        <button
-          onClick={() => {
-            filter(tanggal1, tanggal2);
-          }}
-        >
-          Filter Tanggal
-        </button>
-      </div>
-
       <div className="peminjaman">
-        <h4>Peminjaman</h4>
+        <h4 className="judul">Peminjaman</h4>
         <input
           type="text"
           name="ID Anggota"
@@ -112,53 +89,110 @@ function DataPeminjaman() {
       </div>
 
       <div>
-        <h4>Data Peminjaman</h4>
-        {daftar.map((val, key) => {
-          return (
-            <div className="view">
-              {show ? (
-                <div>
-                  {val.nama}
-                  {val.judul}
-                  {val.tgl_pinjam}
-                  {val.tgl_harus_kembali}
-                  {val.tgl_kembali}
-                  {val.keterangan}
-                  <button
-                    onClick={() => {
-                      kembalikan(val.id_pinjam, val.id_buku);
-                    }}
-                  >
-                    Kembalikan
-                  </button>{" "}
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
-      <div>
-        {hasil.map((val, key) => {
-          return (
-            <div className="view">
-              <div>
-                {val.nama}
-                {val.judul}
-                {val.tgl_pinjam}
-                {val.tgl_harus_kembali}
-                {val.tgl_kembali}
-                {val.keterangan}
-                <button
-                  onClick={() => {
-                    kembalikan(val.id_pinjam, val.id_buku);
-                  }}
-                >
-                  Kembalikan
-                </button>{" "}
-              </div>
-            </div>
-          );
-        })}
+        <h4 className="judul">Data Peminjaman</h4>
+        <div className="filtering">
+          <input
+            type="date"
+            name="tanggal1"
+            onChange={(event) => {
+              setTgl1(event.target.value);
+            }}
+          />
+          {" - "}
+          <input
+            type="date"
+            name="tanggal2"
+            onChange={(event) => {
+              setTgl2(event.target.value);
+            }}
+          />
+          <button
+            onClick={() => {
+              setShow2(true);
+              filter(tanggal1, tanggal2);
+            }}
+          >
+            Filter Tanggal
+          </button>
+        </div>
+
+        {show ? (
+          <div className="tabel">
+            <table id="daftarpj">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Judul</th>
+                  <th>Tanggal Peminjaman</th>
+                  <th>Tanggal Harus Kembali</th>
+                  <th>Tanggal Pengembalian</th>
+                  <th>Keterangan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {daftar.map((val, key) => (
+                  <tr>
+                    <td>{val.nama}</td>
+                    <td>{val.judul}</td>
+                    <td>{val.tgl_pinjam}</td>
+                    <td>{val.tgl_harus_kembali}</td>
+                    <td>{val.tgl_kembali}</td>
+                    <td>{val.keterangan}</td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          kembalikan(val.id_pinjam, val.id_buku);
+                        }}
+                      >
+                        Kembalikan
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
+
+        {show2 ? (
+          <div className="tabel">
+            <table id="daftarpj">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Judul</th>
+                  <th>Tanggal Peminjaman</th>
+                  <th>Tanggal Harus Kembali</th>
+                  <th>Tanggal Pengembalian</th>
+                  <th>Keterangan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {hasil.map((val, key) => (
+                  <tr>
+                    <td>{val.nama}</td>
+                    <td>{val.judul}</td>
+                    <td>{val.tgl_pinjam}</td>
+                    <td>{val.tgl_harus_kembali}</td>
+                    <td>{val.tgl_kembali}</td>
+                    <td>{val.keterangan}</td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          kembalikan(val.id_pinjam, val.id_buku);
+                        }}
+                      >
+                        Kembalikan
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -1,0 +1,51 @@
+.input {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 10px;
+    column-gap: 10px;
+    padding: 25px;
+    background-color: rgba(170, 170, 170, 0.767);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.judul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:white;
+    text-shadow: 2px 2px 4px #000000; 
+    font-size: 20px;
+    
+  }
+
+.input input {
+    width: 500px;
+    height: 20px;
+    font-size: 14px; 
+}
+
+.input label {
+    text-align: left;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.input button {
+    margin-top: 10px;
+    height: 25px;
+    
+}
+
+.input button:hover {
+    cursor: pointer;    
+}
+
+.positioning  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30vh;
+    margin-bottom: 40vh;
+
+    flex-direction: column;
+}

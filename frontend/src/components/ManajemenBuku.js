@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import "../style/Daftar.css";
+import React, { useState, Fragment } from "react";
 import Axios from "axios";
 import CariBuku from "./CariBuku";
+import ReadOnlyBuku from "./ReadOnlyBuku";
+import EditableBuku from "./EditableBuku";
 
 function DaftarBuku() {
   const [daftar, lihatDaftar] = useState([]);
   const [jumlah, lihatJumlah] = useState([]);
-  const [judulBaru, setJudulBaru] = useState();
-  const [penerbitBaru, setPenerbitBaru] = useState();
-  const [pengarangBaru, setPengarangBaru] = useState();
-  const [show, setShow] = useState(false);
+  const [ubah, setUbah] = useState();
+  const [ubahData, setUbahData] = useState({
+    judul: "",
+    penerbit: "",
+    pengarang: "",
+  });
 
   Axios.get("http://localhost:3001/buku/daftar").then((response) => {
     console.log = response;
@@ -20,12 +25,40 @@ function DaftarBuku() {
     lihatJumlah(response.data);
   });
 
+  const handleUbahData = (event) => {
+    event.preventDefault();
+    const namaKolom = event.target.getAttribute("name");
+    const isiKolom = event.target.value;
+    const dataBaru = { ...ubahData };
+
+    dataBaru[namaKolom] = isiKolom;
+
+    setUbahData(dataBaru);
+  };
+
+  const handleKlikUbah = (event, val) => {
+    event.preventDefault();
+    setUbah(val.id_buku);
+
+    const dataAsli = {
+      judul: val.judul,
+      penerbit: val.penerbit,
+      pengarang: val.pengarang,
+    };
+
+    setUbahData(dataAsli);
+  };
+
+  const handleKlikX = () => {
+    setUbah();
+  };
+
   const updBuku = (id) => {
     if (window.confirm("Apakah anda yakin untuk mengubah data?")) {
       Axios.put("http://localhost:3001/buku/update", {
-        judul: judulBaru,
-        penerbit: penerbitBaru,
-        pengarang: pengarangBaru,
+        judul: ubahData.judul,
+        penerbit: ubahData.penerbit,
+        pengarang: ubahData.pengarang,
         id_buku: id,
       }).then((response) => alert("Sukses!"));
     }
@@ -38,60 +71,39 @@ function DaftarBuku() {
       </div>
 
       <div>
-        <button name="edit" onClick={() => setShow(!show)}>
-          Ubah
-        </button>
-        {daftar.map((val, key) => {
-          return (
-            <div className="view" key={val.id_buku}>
-              {val.judul}
-              {val.penerbit}
-              {val.pengarang}
-              {val.tanggal}
-
-              {show ? (
-                <div>
-                  <label>Judul</label>
-                  <input
-                    type="text"
-                    name="judul"
-                    placeholder={val.judul}
-                    onChange={(event) => {
-                      setJudulBaru(event.target.value);
-                    }}
-                  />
-
-                  <label>Penerbit</label>
-                  <input
-                    type="text"
-                    name="penerbit"
-                    placeholder={val.penerbit}
-                    onChange={(event) => {
-                      setPenerbitBaru(event.target.value);
-                    }}
-                  />
-
-                  <label>Pengarang</label>
-                  <input
-                    type="text"
-                    name="pengarang"
-                    placeholder={val.pengarang}
-                    onChange={(event) => {
-                      setPengarangBaru(event.target.value);
-                    }}
-                  />
-                  <button
-                    onClick={() => {
-                      updBuku(val.id_buku);
-                    }}
-                  >
-                    Simpan
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
+        <div className="tabel">
+          <form>
+            <table id="daftar">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Judul</th>
+                  <th>Penerbit</th>
+                  <th>Pengarang</th>
+                  <th>Tanggal Penambahan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {daftar.map((val, key) => (
+                  <Fragment>
+                    {ubah === val.id_buku ? (
+                      <EditableBuku
+                        val={val}
+                        ubahData={ubahData}
+                        handleUbahData={handleUbahData}
+                        handleKlikX={handleKlikX}
+                        updBuku={updBuku}
+                      />
+                    ) : (
+                      <ReadOnlyBuku val={val} handleKlikUbah={handleKlikUbah} />
+                    )}
+                  </Fragment>
+                ))}
+              </tbody>
+            </table>
+          </form>
+        </div>
       </div>
 
       <div className="jumlah">

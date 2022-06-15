@@ -1,4 +1,4 @@
-import "../style/input.css";
+import "../style/Tambah.css";
 import React, { useState } from "react";
 import Axios from "axios";
 
@@ -18,32 +18,35 @@ function TambahBuku() {
   };
 
   return (
-    <div className="input">
-      <label>Judul</label>
-      <input
-        type="text"
-        onChange={(event) => {
-          setJudul(event.target.value);
-        }}
-      />
+    <div className="positioning">
+      <h3 className="judul">Tambah Buku</h3>
+      <div className="input">
+        <label>Judul</label>
+        <input
+          type="text"
+          onChange={(event) => {
+            setJudul(event.target.value);
+          }}
+        />
 
-      <label>Penerbit</label>
-      <input
-        type="text"
-        onChange={(event) => {
-          setPenerbit(event.target.value);
-        }}
-      />
+        <label>Penerbit</label>
+        <input
+          type="text"
+          onChange={(event) => {
+            setPenerbit(event.target.value);
+          }}
+        />
 
-      <label>Pengarang</label>
-      <input
-        type="text"
-        onChange={(event) => {
-          setPengarang(event.target.value);
-        }}
-      />
+        <label>Pengarang</label>
+        <input
+          type="text"
+          onChange={(event) => {
+            setPengarang(event.target.value);
+          }}
+        />
 
-      <button onClick={tambah}>Tambah Buku</button>
+        <button onClick={tambah}>Tambah Buku</button>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import "../style/input.css";
+import "../style/Tambah.css";
 import React, { useState } from "react";
 import Axios from "axios";
 
@@ -18,32 +18,35 @@ function TambahAnggota() {
   };
 
   return (
-    <div className="input">
-      <label>Nama</label>
-      <input
-        type="text"
-        onChange={(event) => {
-          setNama(event.target.value);
-        }}
-      />
+    <div className="positioning">
+      <h3 className="judul">Tambah Anggota</h3>
+      <div className="input">
+        <label>Nama</label>
+        <input
+          type="text"
+          onChange={(event) => {
+            setNama(event.target.value);
+          }}
+        />
 
-      <label>Alamat</label>
-      <input
-        type="text"
-        onChange={(event) => {
-          setAlamat(event.target.value);
-        }}
-      />
+        <label>Alamat</label>
+        <input
+          type="text"
+          onChange={(event) => {
+            setAlamat(event.target.value);
+          }}
+        />
 
-      <label>Nomor Telepon</label>
-      <input
-        type="text"
-        onChange={(event) => {
-          setTelp(event.target.value);
-        }}
-      />
+        <label>Nomor Telepon</label>
+        <input
+          type="text"
+          onChange={(event) => {
+            setTelp(event.target.value);
+          }}
+        />
 
-      <button onClick={tambah}>Tambah Anggota</button>
+        <button onClick={tambah}>Tambah Anggota</button>
+      </div>
     </div>
   );
 }

@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import "../style/Daftar.css";
+import React, { useState, Fragment } from "react";
 import Axios from "axios";
 import CariAnggota from "./CariAnggota";
+import ReadOnlyAnggota from "./ReadOnlyAnggota";
+import EditableAnggota from "./EditableAnggota";
 
 function DaftarAnggota() {
   const [daftar, lihatDaftar] = useState([]);
   const [jumlah, lihatJumlah] = useState([]);
-  const [namaBaru, setNamaBaru] = useState();
-  const [alamatBaru, setAlamatBaru] = useState();
-  const [telpBaru, setTelpBaru] = useState();
-  const [show, setShow] = useState(false);
+  const [ubah, setUbah] = useState();
+  const [ubahData, setUbahData] = useState({
+    nama: "",
+    alamat: "",
+    no_telp: "",
+  });
 
   Axios.get("http://localhost:3001/anggota/daftar").then((response) => {
     console.log = response;
@@ -20,12 +25,40 @@ function DaftarAnggota() {
     lihatJumlah(response.data);
   });
 
+  const handleUbahData = (event) => {
+    event.preventDefault();
+    const namaKolom = event.target.getAttribute("name");
+    const isiKolom = event.target.value;
+    const dataBaru = { ...ubahData };
+
+    dataBaru[namaKolom] = isiKolom;
+
+    setUbahData(dataBaru);
+  };
+
+  const handleKlikUbah = (event, val) => {
+    event.preventDefault();
+    setUbah(val.id_anggota);
+
+    const dataAsli = {
+      nama: val.nama,
+      alamat: val.alamat,
+      no_telp: val.no_telp,
+    };
+
+    setUbahData(dataAsli);
+  };
+
+  const handleKlikX = () => {
+    setUbah();
+  };
+
   const updAnggota = (id) => {
     if (window.confirm("Apakah anda yakin untuk mengubah data?")) {
       Axios.put("http://localhost:3001/anggota/update", {
-        nama: namaBaru,
-        alamat: alamatBaru,
-        no_telp: telpBaru,
+        nama: ubahData.nama,
+        alamat: ubahData.alamat,
+        no_telp: ubahData.no_telp,
         id_anggota: id,
       }).then((response) => alert("Sukses!"));
     }
@@ -39,70 +72,47 @@ function DaftarAnggota() {
 
   return (
     <div>
-      <CariAnggota />
-      <div className="centered">
-        <button name="edit" onClick={() => setShow(!show)}>
-          Ubah
-        </button>
-        {daftar.map((val, key) => {
-          return (
-            <div className="view" key={val.id_anggota}>
-              {val.id_anggota}
-              {val.nama}
-              {val.alamat}
-              {val.no_telp}
+      <div className="search">
+        <CariAnggota />
+      </div>
 
-              <button
-                onClick={() => {
-                  hapusAnggota(val.id_anggota);
-                }}
-              >
-                Hapus
-              </button>
-
-              {show ? (
-                <div>
-                  <label>Nama</label>
-                  <input
-                    type="text"
-                    name="nama"
-                    placeholder={val.nama}
-                    onChange={(event) => {
-                      setNamaBaru(event.target.value);
-                    }}
-                  />
-
-                  <label>Alamat</label>
-                  <input
-                    type="text"
-                    name="alamat"
-                    placeholder={val.alamat}
-                    onChange={(event) => {
-                      setAlamatBaru(event.target.value);
-                    }}
-                  />
-
-                  <label>Nomor Telepon</label>
-                  <input
-                    type="text"
-                    name="telp"
-                    placeholder={val.no_telp}
-                    onChange={(event) => {
-                      setTelpBaru(event.target.value);
-                    }}
-                  />
-                  <button
-                    onClick={() => {
-                      updAnggota(val.id_anggota);
-                    }}
-                  >
-                    Simpan
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
+      <div>
+        <div className="tabel">
+          <form>
+            <table id="daftar">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama</th>
+                  <th>Alamat</th>
+                  <th>Nomor Telepon</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {daftar.map((val, key) => (
+                  <Fragment>
+                    {ubah === val.id_anggota ? (
+                      <EditableAnggota
+                        val={val}
+                        ubahData={ubahData}
+                        handleUbahData={handleUbahData}
+                        handleKlikX={handleKlikX}
+                        updAnggota={updAnggota}
+                      />
+                    ) : (
+                      <ReadOnlyAnggota
+                        val={val}
+                        handleKlikUbah={handleKlikUbah}
+                        hapusAnggota={hapusAnggota}
+                      />
+                    )}
+                  </Fragment>
+                ))}
+              </tbody>
+            </table>
+          </form>
+        </div>
       </div>
 
       <div className="jumlah">

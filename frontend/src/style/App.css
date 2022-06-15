@@ -1,3 +1,38 @@
-.App {
+.Header{
+    stroke: 1;
+}
 
+.NavBar {
+    
+    display: flex;
+    width: 100%;
+    height: 5vh;
+    
+}
+
+.NavBar h3{
+    color: rgb(255, 255, 255);
+    align-items: right;
+    margin: 10px;
+    
+}
+
+.NavBar h3:hover {
+    color:rgb(255, 208, 0);
+    cursor: pointer; 
+    text-shadow: 2px 2px 4px #000000;           
+}
+
+.Title h3 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 25px;
+    letter-spacing: 2px;
+    margin-left: 10px;
+    margin-right: 45vw;
+}
+
+.Title h3:hover {
+    color: rgb(255, 255, 255);
+    cursor: default;
+    text-shadow: 2px 2px 4px #8b4a00;           
 }
