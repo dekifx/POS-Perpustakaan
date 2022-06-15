@@ -38,7 +38,7 @@ function DataPeminjaman() {
     Axios.post("http://localhost:3001/peminjaman/tambah_a", {
       id_anggota: idA,
     }).then(() => {
-      console.log = "Sukses!";
+      alert("Sukses! Masukkan ID Buku");
     });
   };
 
@@ -46,7 +46,7 @@ function DataPeminjaman() {
     Axios.post("http://localhost:3001/peminjaman/tambah_b", {
       id_buku: idB,
     }).then(() => {
-      console.log = "Sukses!";
+      alert("Peminjaman Sukses");
     });
   };
 
